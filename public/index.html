@@ -1,12 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>my-todo-app</title>
-    <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
-    <script src="script.js"></script>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <!-- <script src="script.js"></script> -->
+
+    <script>
+        async function signup() {
+            const username = document.getElementById("signup-un").value;
+            const password = document.getElementById("signup-pass").value;
+
+            const response = await axios.post("http://localhost:3000/signup", {
+                username: username,
+                password: password
+            });
+            alert("You are signed up")
+        }
+
+        async function signin() {
+            const username = document.getElementById("signin-un").value;
+            const password = document.getElementById("signin-pass").value;
+
+            const response = await axios.post("http://localhost:3000/signin", {
+                username: username,
+                password: password
+            });
+
+            localStorage.setItem("token", response.data.token)
+
+            alert("You are signed in");
+        }
+
+        async function addTask() {
+            const response = await axios.get("http://localhost:3000/home", {
+                headers: {
+                    token: localStorage.getItem("token")
+                }
+            });
+            document.getElementById("information").innerHTML = "Your Tasks: " + response.data.tasks
+        }
+        addTask();
+
+        function logout() {
+            localStorage.removeItem("token");
+        }
+
+    </script>
 </head>
 
 <body>
@@ -18,27 +61,28 @@
         <div>
             <h3>Signup</h3>
         </div>
-        <input id="signup-un" name="username" placeholder="Username">
-        <input id="signup-pass" type="password" name="password" placeholder="Password">
-        <button onclick="signup()">Submit</button>
+        <input id="signup-un" name="username" placeholder="Username"></br>
+        <input id="signup-pass" type="password" name="password" placeholder="Password"></br>
+        <button onclick="signup()">Signup</button>
     </div>
 
     <div>
         <div>
             <h3>Signin</h3>
         </div>
-        <input id="signin-un" type="text" name="username" placeholder="Username">
-        <input id="signin-pass" type="password" name="password" placeholder="Password">
-        <button onclick="signin()">Submit</button>
-    </div>
+        <input id="signin-un" type="text" name="username" placeholder="Username"></br>
+        <input id="signin-pass" type="password" name="password" placeholder="Password"></br>
+        <button onclick="signin()">Signin</button>
+    </div></br></br>
 
     <div>
         <input id="add-task" type="text" name="add" placeholder="Add new task...">
         <button onclick="addTask()">Add</button>
-    </div>
-        
+    </div></br></br>
+
     <div>
         <button onclick="logout()">Logout</button>
     </div>
 </body>
+
 </html>

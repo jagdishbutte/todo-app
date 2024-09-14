@@ -1,11 +1,10 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const path = require('path')
 
 const JWT_SECRET = "mytodoapp";
 const app = express();
 const users = [];
-
-app.use(express.json());
 
 function auth(req, res, next){
     const token = req.headers.token;
@@ -22,6 +21,12 @@ function auth(req, res, next){
     }
 }
 
+app.use(express.json());
+// app.use(express.static(path.join(__dirname, "public")));
+
+app.get("/", (req, res) =>{
+    res.sendFile(__dirname + "/public/index.html");
+});
 
 app.post("/signup", (req, res) => {
     const username = req.body.username;
@@ -78,15 +83,8 @@ app.get("/home", auth, (req,res)=>{
         }
     }
 
-    if(!foundUser){
-        res.status(401).json({
-            message: "Please login first..."
-        });
-    }
-
     res.json({
-        username: foundUser.username,
-        password: foundUser.password
+        tasks: foundUser.tasks
     });
 
 });
@@ -97,15 +95,9 @@ app.post("/addtask", auth, (req, res)=>{
 
     let foundUser = null;
     for(i = 0; i<users.length; i++){
-        if(users[i].username === username && users[i].password === password){
+        if(users[i].username === req.username){
             foundUser = users[i];
         }
-    }
-
-    if (!foundUser) {
-        return res.status(401).json({
-            message: "Please login first..."
-        });
     }
 
     foundUser.tasks.push(task);

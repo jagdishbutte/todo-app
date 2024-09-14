@@ -2,7 +2,7 @@ async function signup() {
     const username = document.getElementById("signup-un").value;
     const password = document.getElementById("signup-pass").value;
 
-    const response = await axios.post("http://localhost:4000/signup", {
+    const response = await axios.post("http://localhost:3000/signup", {
         username: username,
         password: password
     });
@@ -13,7 +13,7 @@ async function signin() {
     const username = document.getElementById("signin-un").value;
     const password = document.getElementById("signin-pass").value;
 
-    const response = await axios.post("http://localhost:4000/signin", {
+    const response = await axios.post("http://localhost:3000/signin", {
         username: username,
         password: password
     });
@@ -24,7 +24,7 @@ async function signin() {
 }
 
 async function addTask() {
-    const response = await axios.get("http://localhost:4000/home", {
+    const response = await axios.get("http://localhost:3000/home", {
         headers: {
             token: localStorage.getItem("token")
         }
