@@ -1,55 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>my-todo-app</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
-    <!-- <link rel="stylesheet" href="style.css"> -->
-    <!-- <script src="script.js"></script> -->
-
-    <script>
-        async function signup() {
-            const username = document.getElementById("signup-un").value;
-            const password = document.getElementById("signup-pass").value;
-
-            const response = await axios.post("http://localhost:3000/signup", {
-                username: username,
-                password: password
-            });
-            alert("You are signed up")
-        }
-
-        async function signin() {
-            const username = document.getElementById("signin-un").value;
-            const password = document.getElementById("signin-pass").value;
-
-            const response = await axios.post("http://localhost:3000/signin", {
-                username: username,
-                password: password
-            });
-
-            localStorage.setItem("token", response.data.token)
-
-            alert("You are signed in");
-        }
-
-        async function addTask() {
-            const response = await axios.get("http://localhost:3000/home", {
-                headers: {
-                    token: localStorage.getItem("token")
-                }
-            });
-            document.getElementById("information").innerHTML = "Your Tasks: " + response.data.tasks
-        }
-        addTask();
-
-        function logout() {
-            localStorage.removeItem("token");
-        }
-
-    </script>
+    <link rel="stylesheet" href="style.css"> 
+    <script src="script.js"></script> 
 </head>
 
 <body>
@@ -78,6 +37,8 @@
     <div>
         <input id="add-task" type="text" name="add" placeholder="Add new task...">
         <button onclick="addTask()">Add</button>
+
+        <ul id="task-list"></ul>
     </div></br></br>
 
     <div>

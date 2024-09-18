@@ -22,7 +22,7 @@ function auth(req, res, next){
 }
 
 app.use(express.json());
-// app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) =>{
     res.sendFile(__dirname + "/public/index.html");
@@ -71,25 +71,6 @@ app.post("/signin", (req, res) =>{
     }
 });
 
-
-
-app.get("/home", auth, (req,res)=>{
-    
-    let foundUser = null;
-
-    for(let i = 0; i<users.length; i++){
-        if(users[i].username === req.username){
-            foundUser = users[i];
-        }
-    }
-
-    res.json({
-        tasks: foundUser.tasks
-    });
-
-});
-
-
 app.post("/addtask", auth, (req, res)=>{
     const task = req.body.task;
 
@@ -108,6 +89,21 @@ app.post("/addtask", auth, (req, res)=>{
     });
 });
 
+app.get("/home", auth, (req,res)=>{
+    
+    let foundUser = null;
+
+    for(let i = 0; i<users.length; i++){
+        if(users[i].username === req.username){
+            foundUser = users[i];
+        }
+    }
+
+    res.json({
+        tasks: foundUser.tasks
+    });
+
+});
 
 app.listen(3000, ()=>{
     console.log("App is listening on port 3000");
